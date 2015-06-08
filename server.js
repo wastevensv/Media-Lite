@@ -24,7 +24,7 @@ app.get("/api/:id/", function(req,res) {
   res.send(channels[req.params.id]);
 });
 app.get("/api/:id/current", function(req,res) {
-  if(channels[req.params.id] === undefined) {
+  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
     res.send("Invalid ID");
     return
   }
@@ -32,33 +32,35 @@ app.get("/api/:id/current", function(req,res) {
 });
 
 app.post("/api/:id/add", function(req,res) {
-  if(channels[req.params.id] === undefined)
+  if(channels[req.params.id] === undefined) // Check if the specified channel exists.
     channels[req.params.id] = new Array()
+
   channels[req.params.id].push(req.body.data);
   res.send(req.body.data);
 });
 app.post("/api/:id/set", function(req,res) {
-  if(channels[req.params.id] === undefined)
+  if(channels[req.params.id] === undefined) // Check if the specified channel exists.
     channels[req.params.id] = new Array()
+
   channels[req.params.id] = req.body;
   res.send(req.body);
 });
 
 app.get("/api/:id/rotate", function(req,res) {
-  if(channels[req.params.id] === undefined) {
+  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
     res.send("Invalid ID");
     return
   }
-  channels[req.params.id].push(channels[req.params.id].shift());
-  res.send(channels[req.params.id][0]);
+  channels[req.params.id].push(channels[req.params.id].shift()); //Shift first item to the end.
+  res.send(channels[req.params.id][0]); //Return the new first item
 });
 app.get("/api/:id/advance", function(req,res) {
-  if(channels[req.params.id] === undefined) {
+  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
     res.send("Invalid ID");
     return
   }
-  channels[req.params.id].shift();
-  res.send(channels[req.params.id][0]);
+  channels[req.params.id].shift(); //Shift first item out of array
+  res.send(channels[req.params.id][0]); //Return the new first item
 });
 
 // Start Server
