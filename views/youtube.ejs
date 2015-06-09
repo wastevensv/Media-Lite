@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="/static/video.css">
   <script src="/static/jquery.min.js"></script>
   <script src="/static/bootstrap.min.js"></script>
-  <!-- <script src="/static/socket.io.js"></script> -->
+  <script src="/static/socket.io.js"></script>
   <script>
     var player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
-        width:1280,
-        height:720,
+        width:$(window).width,
+        height:$(window).height,
         videoId: 'KAi2QIq1SUs',
         playerVars: { autoplay: 1, controls: 0, disablekb: 1, iv_load_policy: 3, showinfo: 0, modestbranding: 1, wmode: 'transparent' }
       });
