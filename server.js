@@ -1,69 +1,51 @@
 // Express setup
 var express = require("express");
-var app = express();
+var app = module.exports.app = express();
+
+var http = require("http");
+var server = http.createServer(app);
+var io = require('socket.io')(server);
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');  
-
+app.use('/static', express.static('static'));
 // HTML Routes
 
 app.get('/', function(req,res) {
-  res.render('layout', { title:'The index page' })
+  res.render('youtube', { title:'The index page' })
 });
 
 // API Routes
-var channels = new Object();
+var channels = new Array();
 
-app.get("/api/:id/", function(req,res) {
-  if(channels[req.params.id] === undefined) {
-    res.send("Invalid ID");
-    return
-  }
-  res.send(channels[req.params.id]);
+app.get("/api/", function(req,res) {
+  res.send(channels);
 });
-app.get("/api/:id/current", function(req,res) {
-  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
-    res.send("Invalid ID");
-    return
-  }
-  res.send(channels[req.params.id][0]);
+app.get("/api/current", function(req,res) {
+  res.send(channels[0]);
 });
 
-app.post("/api/:id/add", function(req,res) {
-  if(channels[req.params.id] === undefined) // Check if the specified channel exists.
-    channels[req.params.id] = new Array()
-
-  channels[req.params.id].push(req.body.data);
+app.post("/api/add", function(req,res) {
+  channels.push(req.body.data);
   res.send(req.body.data);
 });
-app.post("/api/:id/set", function(req,res) {
-  if(channels[req.params.id] === undefined) // Check if the specified channel exists.
-    channels[req.params.id] = new Array()
-
-  channels[req.params.id] = req.body;
+app.post("/api/set", function(req,res) {
+  channels = req.body;
   res.send(req.body);
 });
 
-app.get("/api/:id/rotate", function(req,res) {
-  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
-    res.send("Invalid ID");
-    return
-  }
-  channels[req.params.id].push(channels[req.params.id].shift()); //Shift first item to the end.
-  res.send(channels[req.params.id][0]); //Return the new first item
+app.get("/api/rotate", function(req,res) {
+  channels.push(channels.shift()); //Shift first item to the end.
+  res.send(channels[0]); //Return the new first item
 });
-app.get("/api/:id/advance", function(req,res) {
-  if(channels[req.params.id] === undefined) { // Check if the specified channel exists.
-    res.send("Invalid ID");
-    return
-  }
-  channels[req.params.id].shift(); //Shift first item out of array
-  res.send(channels[req.params.id][0]); //Return the new first item
+app.get("/api/advance", function(req,res) {
+  channels.shift(); //Shift first item out of array
+  res.send(channels[0]); //Return the new first item
 });
 
 // Start Server
-app.listen(3000, function() {
+io.listen(app.listen(3000, function() {
   console.log("listening on http://*:3000")
-});
+}));

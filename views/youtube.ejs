@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/video.css">
+  <script src="/static/jquery.min.js"></script>
+  <script src="/static/bootstrap.min.js"></script>
+  <!-- <script src="/static/socket.io.js"></script> -->
+  <script>
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        width:1280,
+        height:720,
+        videoId: 'KAi2QIq1SUs',
+        playerVars: { autoplay: 1, controls: 0, disablekb: 1, iv_load_policy: 3, showinfo: 0, modestbranding: 1, wmode: 'transparent' }
+      });
+    }
+  </script>
+</head>
+<body > 
+  <span class="col-sm-2" id="menu">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="menu-option"><a href="/menu/">Main Menu</a></li>
+      <li class="menu-option"><a href="javascript:seek(-5)">RW</a></li>
+      <li class="menu-option active"><a href="javascript:playPause()">Play/Pause</a></li>
+      <li class="menu-option"><a href="javascript:seek(5)">FF</a></li>
+    </ul>
+    <div id="status">...</div>
+  </span>
+  <span id="player"></span>
+  <script src="/static/menu.js"></script>
+  <script src="/static/youtube.js"></script>
+</body> 
+</html>
