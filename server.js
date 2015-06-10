@@ -10,12 +10,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');  
-app.use('/static', express.static('static'));
-// HTML Routes
-
-app.get('/', function(req,res) {
-  res.render('youtube', { title:'The index page' })
-});
+app.use('/', express.static('static'));
 
 // API Routes
 var channels = new Array();
@@ -43,6 +38,22 @@ app.get("/api/rotate", function(req,res) {
 app.get("/api/advance", function(req,res) {
   channels.shift(); //Shift first item out of array
   res.send(channels[0]); //Return the new first item
+});
+
+// Socket.io Routes
+var nremote = io.of('/remote')
+var nviewer = io.of('/viewer')
+
+nremote.on('connection', function(socket){
+    console.log('remote connected');
+    socket.on('playback', function(data){
+      nviewer.emit('playback', data);
+      console.log(data);
+    });
+});
+
+nviewer.on('connection', function(socket){
+    console.log('viewer connected');
 });
 
 // Start Server

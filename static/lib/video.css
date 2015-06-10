@@ -1,3 +1,6 @@
+body {
+  background: black;
+}
 #player {
   position:absolute;
   width: 100%;
