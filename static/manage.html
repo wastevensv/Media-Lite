@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Manage</title>
+    <link rel="stylesheet" href="/lib/bootstrap.min.css" >
+    <script src="/lib/jquery.min.js"></script>
+    <script src="/lib/bootstrap.min.js"></script>
+    <script src="/lib/socket.io.js"></script>
+    <script>
+      var socket = io('/remote');
+    </script>
+    <style>
+      .video-result {
+        min-height:150px;
+        display:block;
+      }
+      .video-info {
+        width:50%;
+      }
+      .video-thumbnail {
+        display: inline;
+        float:left
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="menu">
+        <ul class="nav nav-pills">
+          <li class="menu-option"><a onclick="socket.emit('playback','restart')"> Restart </a></li>
+          <li class="menu-option"><a onclick="socket.emit('playback','rw')"> Rewind </a></li>
+          <li class="menu-option"><a onclick="socket.emit('playback','playpause')"> Play/Pause </a></li>
+          <li class="menu-option"><a onclick="socket.emit('playback','ff')"> Fast Forward </a></li>
+          <li class="menu-option"><a onclick="socket.emit('playback','next');
+          refreshQueue();"> Next Video </a></li>
+        </ul>
+        <ul class="nav nav-pills">
+          <li class="menu-option"><a onclick="collapseQueue()"> Show/Hide Queue </a></li>
+          <li class="menu-option"><a onclick="collapseSearch()"> Show/Hide Search </a></li>
+          <li class="menu-option"><a onclick="refreshQueue()"> Refresh Queue </a></li>
+        </ul>
+      </div>
+
+      <div id="queue-container" class="collapse in">
+      </div>
+
+      <div id="buttons">
+        <input id="query" value='cats' type="text"/><button id="search-button" disabled onclick="search()">Search</button>
+      </div>
+
+      <div id="search-container">
+      </div>
+    </div>
+    <script src="/lib/auth.js"></script>
+    <script src="/lib/queue.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=loadAPIClientInterfaces"></script>
+  </body>
+</html>

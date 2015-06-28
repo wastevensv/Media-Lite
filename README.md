@@ -5,6 +5,6 @@ A simple self-hosted, web-based YouTube player consisting of a queue, a remote, 
 - [x] Viewer
 - [x] Remote
 - [x] Search
-- [ ] View Queue
+- [x] View Queue
 - [ ] Sources other than YouTube?
 - [ ] Visually Appealing
